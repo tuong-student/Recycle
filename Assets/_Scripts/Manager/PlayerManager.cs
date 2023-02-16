@@ -1,35 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game.Object;
 
-public class PlayerManager : MonoBehaviour
+namespace Game.Manager
 {
-    public static PlayerManager Instance { get; private set; }
-
-    [SerializeField] private TrashObjectUI trashObjectUI;
-
-    private void Awake()
+    public class PlayerManager : MonoBehaviour
     {
-        if (Instance == null) Instance = this;
-    }
+        public static PlayerManager Instance { get; private set; }
 
-    public void SetObjectUI(TrashObjectUI trashObjectUI)
-    {
-        this.trashObjectUI = trashObjectUI;
-    }
+        [SerializeField] private TrashObjectUI trashObjectUI;
 
-    public TrashObjectUI GetTrashObjectUI()
-    {
-        return trashObjectUI;
-    }
+        private void Awake()
+        {
+            if (Instance == null) Instance = this;
+        }
 
-    public void ClearTrashObjectUI()
-    {
-        trashObjectUI = null;
-    }
+        public void SetObjectUI(TrashObjectUI trashObjectUI)
+        {
+            this.trashObjectUI = trashObjectUI;
+        }
 
-    public bool IsHoldingTrash()
-    {
-        return trashObjectUI != null;
+        public TrashObjectUI GetTrashObjectUI()
+        {
+            return trashObjectUI;
+        }
+
+        public void ClearTrashObjectUI()
+        {
+            trashObjectUI = null;
+        }
+
+        public bool IsHoldingTrash()
+        {
+            return trashObjectUI != null;
+        }
     }
 }

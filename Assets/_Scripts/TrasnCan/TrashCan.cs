@@ -1,53 +1,58 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Game.Manager;
 
-public enum TrashType
+namespace Game.Object
 {
-    Plastic,
-    Metal,
-    Glass,
-    Organic
-}
-
-public class TrashCan : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler, IDropHandler
-{
-    
-
-    [SerializeField] private TrashType[] acceptType;
-
-    [SerializeField] private TrashCanVisual trashCanVisual;
-
-
-    public void OnPointerEnter(PointerEventData eventData)
+    public enum TrashType
     {
-        trashCanVisual.Open();
+        Plastic,
+        Metal,
+        Glass,
+        Organic
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public class TrashCan : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler, IDropHandler
     {
-        trashCanVisual.Close();
-    }
+        [SerializeField] private TrashType[] acceptType;
 
-    public void OnDrop(PointerEventData eventData)
-    {
-        if (PlayerManager.Instance.IsHoldingTrash())
+        [SerializeField] private TrashCanVisual trashCanVisual;
+
+
+        public void OnPointerEnter(PointerEventData eventData)
         {
-            if(IsAcceptable(PlayerManager.Instance.GetTrashObjectUI()))
+            trashCanVisual.Open();
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            trashCanVisual.Close();
+        }
+
+        public void OnDrop(PointerEventData eventData)
+        {
+            if (PlayerManager.Instance.IsHoldingTrash())
             {
-                PlayerManager.Instance.GetTrashObjectUI().DestroySelf();
+                if(IsAcceptable(PlayerManager.Instance.GetTrashObjectUI()))
+                {
+                    PlayerManager.Instance.GetTrashObjectUI().DestroySelf();
+                    ScoreManager.Instance.AddScore();
+                    trashCanVisual.CreateTimeText();
+                }
             }
         }
-    }
 
-    public bool IsAcceptable(TrashObjectUI trashObjectUI)
-    {
-        foreach(TrashType trashType in acceptType)
+        public bool IsAcceptable(TrashObjectUI trashObjectUI)
         {
-            if (trashType == trashObjectUI.trashType) return true;
+            foreach(TrashType trashType in acceptType)
+            {
+                if (trashType == trashObjectUI.trashType) return true;
+            }
+            return false;
         }
-        return false;
     }
 }

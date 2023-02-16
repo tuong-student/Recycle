@@ -4,43 +4,46 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class TrashObject : MonoBehaviour
+namespace Game.Object
 {
-    private bool isHolding = false;
-    private Vector3 mouseOldPos;
-
-    private void OnMouseDown()
+    public class TrashObject : MonoBehaviour
     {
-        mouseOldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        isHolding = true;
-    }
+        private bool isHolding = false;
+        private Vector3 mouseOldPos;
 
-    private void OnMouseUp()
-    {
-        Debug.Log("Up");
-        isHolding = false;
-    }
-
-    private void OnMouseDrag()
-    {
-        Vector3 mouseNewPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 mouseOffset = mouseNewPos - mouseOldPos;
-
-        if (isHolding == true)
+        private void OnMouseDown()
         {
-            this.transform.position += mouseOffset;
+            mouseOldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            isHolding = true;
         }
-        mouseOldPos = mouseNewPos;
-    }
 
-    private void OnMouseEnter()
-    {
+        private void OnMouseUp()
+        {
+            Debug.Log("Up");
+            isHolding = false;
+        }
+
+        private void OnMouseDrag()
+        {
+            Vector3 mouseNewPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouseOffset = mouseNewPos - mouseOldPos;
+
+            if (isHolding == true)
+            {
+                this.transform.position += mouseOffset;
+            }
+            mouseOldPos = mouseNewPos;
+        }
+
+        private void OnMouseEnter()
+        {
         
-    }
+        }
 
-    private void OnMouseExit()
-    {
+        private void OnMouseExit()
+        {
         
-    }
+        }
 
+    }
 }

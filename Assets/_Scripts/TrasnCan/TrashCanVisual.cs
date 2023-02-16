@@ -3,27 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TrashCanVisual : MonoBehaviour
+namespace Game.Object
 {
-    private Image image;
-    [SerializeField] private Sprite closeImage, openImage;
-    [SerializeField] private Outline outline;
-
-    private void Awake()
+    public class TrashCanVisual : MonoBehaviour
     {
-        image = GetComponent<Image>();
-        outline.enabled = false;
-    }
+        private Image image;
+        private TrashCan trashCan;
+        [SerializeField] private Sprite closeImage, openImage;
+        [SerializeField] private Outline outline;
+        [SerializeField] private Transform textPos;
+        [SerializeField] private Transform trashText;
 
-    public void Open()
-    {
-        outline.enabled = true;
-        image.sprite = openImage;
-    }
+        private void Awake()
+        {
+            trashCan = GetComponentInParent<TrashCan>();
+            image = GetComponent<Image>();
+            outline.enabled = false;
+        }
 
-    public void Close()
-    {
-        outline.enabled = false;
-        image.sprite = closeImage;
+        private void Start()
+        {
+
+        }
+
+        public void CreateTimeText()
+        {
+            Instantiate(trashText, textPos);
+        }
+
+        public void Open()
+        {
+            outline.enabled = true;
+            image.sprite = openImage;
+        }
+
+        public void Close()
+        {
+            outline.enabled = false;
+            image.sprite = closeImage;
+        }
     }
 }
