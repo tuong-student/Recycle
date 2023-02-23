@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace NOOD
 {
-    public class DelayCall : MonoBehaviorInstance<DelayCall>
+    public class DelayCall : MonoBehaviorInstance<NOOD.DelayCall>
     {
         Queue<Action> mainThreadQueue = new Queue<Action>();
 
@@ -39,7 +39,7 @@ namespace NOOD
 
         private IEnumerator Co_Function()
         {
-            yield return new WaitForSeconds(delaySecond);
+            yield return new WaitForSecondsRealtime(delaySecond);
             delayAction?.Invoke();
             Destroy(this.gameObject);
         }

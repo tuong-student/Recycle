@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NOOD.NoodCamera
 { 
-    public class CameraFollow : MonoBehaviorInstance<CameraFollow>
+    public class CameraFollow : MonoBehaviorInstance<NoodCamera.CameraFollow>
     {
         [SerializeField] float smoothTime = 2;
         [SerializeField] string targetTag = "Player";

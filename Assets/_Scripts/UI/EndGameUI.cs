@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,19 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Game.Manager;
+using Game.SO;
 
 namespace Game.UI
 {
     public class EndGameUI : MonoBehaviour
     {
+        public static EventHandler OnHoverEvent;
+        public static EventHandler<OnClickEventArgs> OnClickEvent;
+        public class OnClickEventArgs : EventArgs
+        {
+            public Action callBackAction;
+        }
+
         [SerializeField] private HighScoreSO highScoreSO;
         [SerializeField] private TextMeshProUGUI highScore;
         [SerializeField] private TextMeshProUGUI score;
@@ -20,14 +29,28 @@ namespace Game.UI
         {
             mainMenuBtn.onClick.AddListener(() =>
             {
-                ResetStaticData.Instance.Dispose();
-                Loader.LoadToScene(Loader.Scene.MainMenu);
+                Time.timeScale = 1;
+                OnClickEvent?.Invoke(this, new OnClickEventArgs
+                {
+                    callBackAction = () =>
+                    {
+                        ResetStaticData.Instance.Dispose();
+                        Loader.LoadToScene(Loader.Scene.MainMenu);
+                    }
+
+                });
             });
             replayBtn.onClick.AddListener(() =>
             {
-                ResetStaticData.Instance.Dispose();
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                Time.timeScale = 1;
+                 Time.timeScale = 1;
+                OnClickEvent?.Invoke(this, new OnClickEventArgs
+                {
+                    callBackAction = () =>
+                    {
+                        ResetStaticData.Instance.Dispose();
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    }
+                });
             });
 
             GameManager.OnGameOver += (object sender, System.EventArgs e) => Show();
@@ -51,6 +74,13 @@ namespace Game.UI
         private void Hide()
         {
             this.gameObject.SetActive(false);
+        }
+
+        public void PerformOnHoverEvent()
+        {
+            Time.timeScale = 1f;
+            OnHoverEvent?.Invoke(this, EventArgs.Empty);
+            Time.timeScale = 0f;
         }
     }
 }

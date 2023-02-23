@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Game.Manager;
+using NOOD;
 
 namespace Game.Object
 {
@@ -16,15 +17,27 @@ namespace Game.Object
         Organic
     }
 
-    public class TrashCan : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler, IDropHandler
+    public class TrashCan : AbstractMonoBehaviour,IPointerEnterHandler, IPointerExitHandler, IDropHandler
     {
+        public static EventHandler OnTrashCanHovered;
+        public static EventHandler OnCorrectTrashObject;
+        public static EventHandler OnWrongTrashObject;
+
+        private NOOD.NoodCamera.CameraShake cameraShake;
+
         [SerializeField] private TrashType[] acceptType;
 
         [SerializeField] private TrashCanVisual trashCanVisual;
 
+        private void Start()
+        {
+            this.AddTo(ResetStaticData.Instance);
+            cameraShake = this.GetComponent<NOOD.NoodCamera.CameraShake>();
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            OnTrashCanHovered?.Invoke(this, EventArgs.Empty);
             trashCanVisual.Open();
         }
 
@@ -39,11 +52,22 @@ namespace Game.Object
             {
                 if(IsAcceptable(PlayerManager.Instance.GetTrashObjectUI()))
                 {
-                    PlayerManager.Instance.GetTrashObjectUI().DestroySelf();
                     ScoreManager.Instance.AddScore();
                     trashCanVisual.CreateTimeText();
+                    OnCorrectTrashObject?.Invoke(this, EventArgs.Empty);
+                    PlayerManager.Instance.GetTrashObjectUI().DestroySelf();
+                }
+                else
+                {
+                    OnWrongTrashObject?.Invoke(this, EventArgs.Empty);
+                    Shake();
                 }
             }
+        }
+
+        private void Shake()
+        {
+            cameraShake.Shake(0.2f, 20f);
         }
 
         public bool IsAcceptable(TrashObjectUI trashObjectUI)
@@ -53,6 +77,13 @@ namespace Game.Object
                 if (trashType == trashObjectUI.trashType) return true;
             }
             return false;
+        }
+
+        public override void Dispose()
+        {
+            OnTrashCanHovered = null;
+            OnCorrectTrashObject = null;
+            OnWrongTrashObject = null;
         }
     }
 }

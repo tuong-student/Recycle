@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu()]
-public class HighScoreSO : ScriptableObject
+namespace Game.SO
 {
-    public float highScore;
+    [CreateAssetMenu()]
+    public class HighScoreSO : ScriptableObject
+    {
+        public float highScore;
+    }
 }

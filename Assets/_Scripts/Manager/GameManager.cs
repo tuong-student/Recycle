@@ -49,12 +49,11 @@ namespace Game.Manager
 
         private void PauseGame()
         {
-            Debug.Log(isPauseGame);
             isPauseGame = !isPauseGame;
             if (isPauseGame)
             {
-                Time.timeScale = 0f;
                 OnPauseGame?.Invoke(this, EventArgs.Empty);
+                Time.timeScale = 0f;
             }
             else
             {

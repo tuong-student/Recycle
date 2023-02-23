@@ -31,7 +31,8 @@ namespace Game.Object
             isHolding = true;
             myBody.bodyType = RigidbodyType2D.Kinematic;
             myBody.velocity = Vector3.zero;
-            PlayerManager.Instance.SetObjectUI(this);
+            if(PlayerManager.Instance != null)
+                PlayerManager.Instance.SetObjectUI(this);
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -58,7 +59,8 @@ namespace Game.Object
         {
             canvasGroup.blocksRaycasts = true;
             myBody.bodyType = RigidbodyType2D.Dynamic;
-            PlayerManager.Instance.ClearTrashObjectUI();
+            if(PlayerManager.Instance != null)
+                PlayerManager.Instance.ClearTrashObjectUI();
         }
 
         public void OnDrag(PointerEventData eventData)

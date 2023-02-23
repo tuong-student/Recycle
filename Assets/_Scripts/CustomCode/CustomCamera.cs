@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NOOD.NoodCamera 
 { 
-    public class CustomCamera : MonoBehaviorInstance<CustomCamera>
+    public class CustomCamera : MonoBehaviorInstance<NoodCamera.CustomCamera>
     {
         #region Components
         #endregion

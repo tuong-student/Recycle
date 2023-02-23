@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 using NOOD;
 using Game.Object;
+using Game.SO;
 
 namespace Game.Manager
 {
